@@ -103,7 +103,6 @@ Plug 'pandark/42header.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'alexandregv/norminette-vim'
 Plug 'bfrg/vim-cpp-modern'
-Plug 'preservim/tagbar'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
@@ -114,6 +113,9 @@ Plug 'diepm/vim-rest-console'
 Plug 'joukevandermaas/vim-ember-hbs'
 Plug 'Scuilion/gradle-syntastic-plugin'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'jiangmiao/auto-pairs'
+Plug 'stevearc/conform.nvim'
+
 call plug#end()
 
 ""#################################################
@@ -212,7 +214,6 @@ nmap <leader>bq :bp <BAR> bd #<CR>
 "########           Nerdtree              ########
 "#################################################
 autocmd vimenter * NERDTree
-autocmd vimenter * Tagbar
 "autocmd VimEnter * botright vsplit
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -232,22 +233,6 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 "########           Treesitter            ########
 "#################################################
 
-
-
-"#################################################
-"########            Tagbar               ########
-"#################################################
-nnoremap <Leader>t :TagbarToggle <CR> 
-" ------------------------------------
-" tagbar 설정
-" ------------------------------------
-"let g:tagbar_position = 'topleft '
-"let g:tagbar_position = 'botright'
-let g:tagbar_position = 'leftabove split'
-"let g:tagbar_position = 'rightbelow'
-let g:tagbar_height = 20
-"let g:tagbar_vertical = 30
-"
 
 "#################################################
 "########            coc map              ########
