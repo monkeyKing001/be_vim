@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import urllib.request
 import platform
+import json
 from termcolor import colored
 
 def print_starting(package_name):
@@ -170,10 +171,49 @@ def add_alias():
     print(f"Added alias to {shell_rc}.")
     source_shell_rc(shell_rc)
 
+def install_coc_languages():
+    """
+    Reads the ./coc/extensions/package.json file and installs all listed coc.nvim extensions.
+    """
+    try:
+        # Path to the package.json file
+        package_json_path = os.path.expanduser('./coc/extensions/package.json')
+
+        # Check if the file exists
+        if not os.path.exists(package_json_path):
+            print(f"Error: {package_json_path} does not exist.")
+            return
+
+        # Read the package.json file
+        with open(package_json_path, 'r') as file:
+            data = json.load(file)
+
+        # Extract dependencies
+        extensions = data.get('dependencies', {})
+        if not extensions:
+            print("No extensions found in package.json.")
+            return
+
+        # Install each extension
+        for extension in extensions.keys():
+            print(f"Installing {extension}...")
+            try:
+                # Use the CocInstall command to install the extension
+                subprocess.run(
+                    ['nvim', '--headless', '-c', f'CocInstall {extension}', '-c', 'q'],
+                    check=True
+                )
+                print(f"Successfully installed {extension}")
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to install {extension}: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 def main():
     install_dependencies()
     download_files()
     install_nvim_plugins()
+    install_coc_languages()
     add_alias()
 
 if __name__ == "__main__":
