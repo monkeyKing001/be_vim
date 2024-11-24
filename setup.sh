@@ -6,9 +6,6 @@ SETUP_PY="setup_vim.py"
 # Make the Python script executable
 chmod 777 ${DIR}/${SETUP_PY}
 
-# Install Python dependencies
-pip3 install -r requirements.txt
-
 # Detect operating system
 OS=$(uname -s)
 
@@ -29,11 +26,16 @@ elif [[ "$OS" == "Linux" ]]; then
         exit 1
     fi
     echo "Installing necessary packages using apt-get..."
-    sudo apt-get update
-    sudo apt-get install -y python3, pip
+#    sudo apt-get update
+#    sudo apt-get install -y python3, pip
+    apt-get update
+    apt-get install -y python3, pip
 else
     echo "Unsupported operating system: $OS"
     exit 1
 fi
+
+# Install Python dependencies
+pip3 install -r requirements.txt
 
 echo "Setup completed successfully."
