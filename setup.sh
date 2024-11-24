@@ -17,7 +17,7 @@ if [[ "$OS" == "Darwin" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     echo "Installing necessary packages using brew..."
-    brew install python3, pip
+    brew install python3, python3-pip sudo
 elif [[ "$OS" == "Linux" ]]; then
     echo "Detected Linux. Using apt-get for package installation."
     # Ensure apt-get is available
@@ -29,7 +29,7 @@ elif [[ "$OS" == "Linux" ]]; then
 #    sudo apt-get update
 #    sudo apt-get install -y python3, pip
     apt-get update
-    apt-get install -y python3, pip
+    apt-get install -y python3, python3-pip sudo
 else
     echo "Unsupported operating system: $OS"
     exit 1
@@ -37,5 +37,6 @@ fi
 
 # Install Python dependencies
 pip3 install -r requirements.txt
+chmod +x ./setup_vim.py
 
 echo "Setup completed successfully."

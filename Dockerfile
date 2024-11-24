@@ -9,12 +9,6 @@ RUN apt-get update && \
     apt-get install -y vim curl git python3 python3-pip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Neovim
-RUN apt-get remove -y neovim
-	curl https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage \
-      -Lo ~/.local/bin/nvim --create-dirs
-	chmod u+x ~/.local/bin/nvim
-
 # Install Node.js (LTS version)
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs && \
