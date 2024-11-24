@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-
+#!/usr/local/bin/ python3.11
 import os
 import shutil
 import subprocess
@@ -7,6 +6,9 @@ import urllib.request
 import platform
 import json
 from termcolor import colored
+
+def test():
+    print("hello")
 
 def print_starting(package_name):
     print(colored(f"Starting installation of {package_name}...", "green"))

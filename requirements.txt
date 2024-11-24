@@ -2,3 +2,4 @@ requests
 termcolor
 pynvim
 pylint
+jedi
