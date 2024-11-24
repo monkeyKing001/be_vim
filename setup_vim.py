@@ -219,7 +219,7 @@ def install_treesitter_language():
     Install treesiter language
     """
     try:
-        languages = ["c", "cpp", "python", "java", "javascript", "typescript","camke", "bash","dockerfile",]
+        languages = ["c", "cpp", "python", "java", "javascript", "typescript","cmake", "bash","dockerfile",]
 
         # Install each extension
         for language in languages:
