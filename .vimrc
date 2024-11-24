@@ -100,7 +100,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'eslint/eslint'
 Plug 'pandark/42header.vim'
-Plug 'vim-syntastic/syntastic'
 Plug 'alexandregv/norminette-vim'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -111,7 +110,6 @@ Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'diepm/vim-rest-console'
 Plug 'joukevandermaas/vim-ember-hbs'
-Plug 'Scuilion/gradle-syntastic-plugin'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jiangmiao/auto-pairs'
 Plug 'stevearc/conform.nvim'
@@ -242,6 +240,8 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " no select by `"suggest.noselect": true` in your configuration file
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config
+" diagnositic
+" autocmd! User CocDiagnosticChange :CocDiagnostics
 
 " float
 inoremap <nowait><expr> <C-m> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1, 1)\<cr>" : "\<Right>"
@@ -363,36 +363,36 @@ let g:syntastic_cpp_compiler_options = ' -std=c++17 -stdlib=libc++'
 ""########     syntastic_checker_clang     ########
 ""#################################################
 "For syntastic
-set laststatus=2
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+"set laststatus=2
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 "
-let g:syntastic_c_checkers = [ 'clang_tidy', 'clang' ]
-let g:syntastic_c_compiler = 'clang'
-let g:syntastic_c_clang_args = '-Wall -Werror -Wextra -Iinclude'
-let g:syntastic_c_clang_tidy_args = '-checks=*'
-let g:syntastic_c_compiler_options = '-Wall -Iinclude'
-let g:syntastic_c_include_dirs = [ '../include', 'include' ]
-let g:syntastic_c_clang_tidy_post_args = ""
+"let g:syntastic_error_symbol = '✗'
+"let g:syntastic_warning_symbol = '⚠'
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+""
+"let g:syntastic_c_checkers = [ 'clang_tidy', 'clang' ]
+"let g:syntastic_c_compiler = 'clang'
+"let g:syntastic_c_clang_args = '-Wall -Werror -Wextra -Iinclude'
+"let g:syntastic_c_clang_tidy_args = '-checks=*'
+"let g:syntastic_c_compiler_options = '-Wall -Iinclude'
+"let g:syntastic_c_include_dirs = [ '../include', 'include' ]
+"let g:syntastic_c_clang_tidy_post_args = ""
+""
+"""#################################################
+"""########      syntastic_checker_JAVA     ########
+"""#################################################
+"let g:syntastic_java_javac_exec = '/usr/bin/javac'
+"let g:syntastic_java_javac_config_file_enabled = 1
+"let g:syntastic_java_checkers=['javac']
+""let g:syntastic_java_checkers = ['checkstyle']
+"let g:syntastic_java_classpath = ["./:../"]
+"let g:syntastic_quiet_messages = { "!level":  "errors" }
 "
-""#################################################
-""########      syntastic_checker_JAVA     ########
-""#################################################
-let g:syntastic_java_javac_exec = '/usr/bin/javac'
-let g:syntastic_java_javac_config_file_enabled = 1
-let g:syntastic_java_checkers=['javac']
-"let g:syntastic_java_checkers = ['checkstyle']
-let g:syntastic_java_classpath = ["./:../"]
-let g:syntastic_quiet_messages = { "!level":  "errors" }
-
 "let g:syntastic_java_checkstyle_exec = 'java'
 "let g:syntastic_java_checkers = ['checkstyle']
 "let g:syntastic_java_checkstyle_classpath = '~/.vim/checkstyle/checkstyle-10.12.4-all.jar'
@@ -401,9 +401,20 @@ let g:syntastic_quiet_messages = { "!level":  "errors" }
 " ------------------------------------
 " nvim-treesitter 설정
 " ------------------------------------
-"
-" Select the font for the hardcopy
-set printfont=Courier:h8
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"c", "cpp", "python"},
+  ignore_install = { "" },
+  highlight = {
+    enable = true,
+    disable = { "" },
+    additional_vim_regex_highlighting = true,
+  },
+  indent = { enable = true, disable = { "" } },
+}
+EOF
+"" Select the font for the hardcopy
+"set printfont=Courier:h8
 command! -range=% HardcopyPdf <line1>,<line2> hardcopy > %.ps | !ps2pdf %.ps && rm %.ps && echo 'Created: %.pdf'
 
 
