@@ -211,11 +211,36 @@ def install_coc_languages():
     except Exception as e:
         print(f"Error: {e}")
 
+
+
+def install_treesitter_language():
+    """
+    Install treesiter language
+    """
+    try:
+        languages = ["c", "cpp", "python", "java", "javascript", "typescript","camke", "bash","dockerfile",]
+
+        # Install each extension
+        for language in languages:
+            print(f"Installing {language}...")
+            try:
+                # Use the CocInstall command to install the extension
+                subprocess.run(
+                    ['nvim', '--headless', '-c', f'TSInstall {language}', '-c', 'q'],
+                    check=True
+                )
+                print(f"Successfully installed {language}")
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to install {language}: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 def main():
     install_dependencies()
     download_files()
     install_nvim_plugins()
     install_coc_languages()
+    install_treesitter_language()
     add_alias()
 
 if __name__ == "__main__":

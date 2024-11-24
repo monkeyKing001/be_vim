@@ -20,7 +20,7 @@ if [[ "$OS" == "Darwin" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     echo "Installing necessary packages using brew..."
-    brew install sudo
+    brew install python3, pip
 elif [[ "$OS" == "Linux" ]]; then
     echo "Detected Linux. Using apt-get for package installation."
     # Ensure apt-get is available
@@ -30,7 +30,7 @@ elif [[ "$OS" == "Linux" ]]; then
     fi
     echo "Installing necessary packages using apt-get..."
     sudo apt-get update
-    sudo apt-get install -y sudo
+    sudo apt-get install -y python3, pip
 else
     echo "Unsupported operating system: $OS"
     exit 1
