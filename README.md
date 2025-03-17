@@ -42,6 +42,11 @@ If these dependencies are missing, the setup script(`setup.sh`) will install the
      ```bash
      source ~/.zshrc
      ```
+4. ** change "g:python3_host_prog' to be_vim venv **
+
+```vimrc
+let g:python3_host_prog = '<your_be_vim_venv_path>/.venv'
+```
 
 ### **Notes**
 - This script handles the setup process for Neovim and ensures compatibility with your environment.
@@ -91,6 +96,11 @@ Neovim 자동 설정 스크립트.
      ```bash
      source ~/.zshrc
      ```
+4. **g:python3_host_prog' to be_vim venv 바꾸기**
+
+```vimrc
+let g:python3_host_prog = '<your_be_vim_venv_path>/.venv'
+```
 
 ---
 
