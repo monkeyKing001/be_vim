@@ -212,27 +212,33 @@ def install_coc_languages():
     except Exception as e:
         print(f"Error: {e}")
 
-
-
 def install_treesitter_language():
     """
-    Install treesiter language
+    Install Tree-sitter languages, skipping already installed ones.
     """
     try:
-        languages = ["c", "cpp", "python", "java", "javascript", "typescript","cmake", "bash","dockerfile",]
+        languages = ["cpp", "python", "java", "javascript", "typescript", "cmake", "bash", "dockerfile"]
 
         # Install each extension
         for language in languages:
-            print(f"Installing {language}...")
+            print(f"Checking installation for {language}...")
             try:
-                # Use the CocInstall command to install the extension
-                subprocess.run(
-                    ['nvim', '--headless', '-c', f'TSInstall {language}', '-c', 'q'],
-                    check=True
+                # Check if the language is already installed
+                result = subprocess.run(
+                    ['nvim', '--headless', '-c', f'TSInstallInfo {language}', '-c', 'q'],
+                    check=True, capture_output=True, text=True
                 )
-                print(f"Successfully installed {language}")
+                if "not installed" in result.stdout:
+                    print(f"{language} is not installed. Installing...")
+                    subprocess.run(
+                        ['nvim', '--headless', '-c', f'TSInstallSync {language}', '-c', 'q'],
+                        check=True
+                    )
+                    print(f"Successfully installed {language}")
+                else:
+                    print(f"{language} is already installed. Skipping...")
             except subprocess.CalledProcessError as e:
-                print(f"Failed to install {language}: {e}")
+                print(f"Failed to check or install {language}: {e}")
     except Exception as e:
         print(f"Error: {e}")
 

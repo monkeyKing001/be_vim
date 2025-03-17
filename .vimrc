@@ -8,6 +8,7 @@
 " =  t(terminal mode) 편집 모드                                           =
 " =  c(commnad-line) 모드                                                 =
 " =  re(recursive) 맵핑                                                   =
+" =========================================================================
 "
 "remap is an option that makes mappings work recursively. By default it is on and I'd recommend you leave it that way. The rest are mapping commands, described below:
 
@@ -31,9 +32,10 @@ set ai "set auto indent
 set cindent
 set showmatch
 set wmnu
-set tabstop=4
+set tabstop=2
+set expandtab
 set hlsearch
-set shiftwidth=4
+set shiftwidth=2
 set background=dark
 set mouse=a
 
@@ -99,7 +101,6 @@ Plug 'preservim/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'eslint/eslint'
-Plug 'pandark/42header.vim'
 Plug 'alexandregv/norminette-vim'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -111,31 +112,9 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'diepm/vim-rest-console'
 Plug 'joukevandermaas/vim-ember-hbs'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'jiangmiao/auto-pairs'
-Plug 'stevearc/conform.nvim'
 
 call plug#end()
 
-""#################################################
-""########     vundle, plugin install      ########
-""#################################################
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-"
-"" let Vundle manage Vundle, requried
-"Plugin 'VundleVim/Vundle.vim'
-"
-""추가
-"Plugin 'scrooloose/nerdtree'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes'
-"Plugin 'eslint/eslint'
-"Plugin 'pandark/42header.vim'
-"Plugin 'vim-syntastic/syntastic'
-"Plugin 'alexandregv/norminette-vim'
-"Plugin 'bfrg/vim-cpp-modern'
-"
-"call vundle#end() "required
 filetype plugin indent on
 
 "Color Theme
@@ -299,7 +278,6 @@ let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories = ['~/.vim/plugged/vim-snippets/UltiSnips']
-"let g:UltiSnipsSnippetDirectories = ['UltiSnips']
 
 
 "#################################################
@@ -314,94 +292,11 @@ nmap <F12> :stj <c-r><c-w><CR>
 "########          Javascript          ###########
 "#################################################
 
-"#################################################
-"########          42 Header           ###########
-"#################################################
-"42_Header
-nmap <f1> :FortyTwoHeader<CR>
-autocmd FileType htmldjango let b:fortytwoheader_delimiters=['{#', '#}', '*']
-let g:hd42user = 'dokwak'
-let g:hdr42mail = 'dokwak@student.42seoul.kr'
-
-"#################################################
-"########         42 norminette           ########
-"#################################################
-" Set the path to norminette (do no set if using norminette of 42 mac)
-" let g:syntastic_c_norminette_exec = '~/.norminette/norminette.rb'
-" let g:syntastic_c_norminette_exec = 'norminette'
-" Support headers (.h)
- let g:c_syntax_for_h = 1
- let g:syntastic_c_include_dirs = ['include', '../include', '../../include', 'libft', '../libft/include', '../../libft/include']
-
-" Pass custom arguments to norminette (this one ignores 42header)
-"let g:syntastic_c_norminette_args = '-R CheckTopCommentHeader'
-
-" Check errors when opening a file (disable to speed up startup time)
-let g:syntastic_check_on_open = 1
-
-" Enable error list
-let g:syntastic_always_populate_loc_list = 1
-
-" Automatically open error list
-let g:syntastic_auto_loc_list = 1
-
-"#################################################
-"########      syntastic_checker_gcc      ########
-"#################################################
-
-" Enable norminette-vim (and gcc)
-" let g:syntastic_c_checkers = ['norminette', 'gcc', 'g++'] "norminette + gcc
-let g:syntastic_c_checkers = ['g++', 'gcc']
-
-let g:syntastic_aggregate_errors = 1
-" 1998
-"let g:syntastic_cpp_compiler_options = ' -std=c++98 -stdlib=libc++'
-" 2017
-let g:syntastic_cpp_compiler_options = ' -std=c++17 -stdlib=libc++'
-
-""#################################################
-""########     syntastic_checker_clang     ########
-""#################################################
-"For syntastic
-"set laststatus=2
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-"
-"let g:syntastic_error_symbol = '✗'
-"let g:syntastic_warning_symbol = '⚠'
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
-""
-"let g:syntastic_c_checkers = [ 'clang_tidy', 'clang' ]
-"let g:syntastic_c_compiler = 'clang'
-"let g:syntastic_c_clang_args = '-Wall -Werror -Wextra -Iinclude'
-"let g:syntastic_c_clang_tidy_args = '-checks=*'
-"let g:syntastic_c_compiler_options = '-Wall -Iinclude'
-"let g:syntastic_c_include_dirs = [ '../include', 'include' ]
-"let g:syntastic_c_clang_tidy_post_args = ""
-""
-"""#################################################
-"""########      syntastic_checker_JAVA     ########
-"""#################################################
-"let g:syntastic_java_javac_exec = '/usr/bin/javac'
-"let g:syntastic_java_javac_config_file_enabled = 1
-"let g:syntastic_java_checkers=['javac']
-""let g:syntastic_java_checkers = ['checkstyle']
-"let g:syntastic_java_classpath = ["./:../"]
-"let g:syntastic_quiet_messages = { "!level":  "errors" }
-"
-"let g:syntastic_java_checkstyle_exec = 'java'
-"let g:syntastic_java_checkers = ['checkstyle']
-"let g:syntastic_java_checkstyle_classpath = '~/.vim/checkstyle/checkstyle-10.12.4-all.jar'
-"let g:syntastic_java_checkstyle_conf_file = '~/Downloads/hackday-conventions-java/rule-config/naver-checkstyle-rules.xml'
 
 " ------------------------------------
 " nvim-treesitter 설정
 " ------------------------------------
-lua <<EOF
+lua <<eof
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"c", "cpp", "python"},
   ignore_install = { "" },
@@ -412,15 +307,17 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = { enable = true, disable = { "" } },
 }
-EOF
-"" Select the font for the hardcopy
+eof
+" Select the font for the hardcopy
 "set printfont=Courier:h8
+
 command! -range=% HardcopyPdf <line1>,<line2> hardcopy > %.ps | !ps2pdf %.ps && rm %.ps && echo 'Created: %.pdf'
 
 
-" Skip check when closing
-let g:syntastic_check_on_wq = 1 
 :autocmd BufNewFile *.c 0r ~/.vim/templates/skeleton.c
 :autocmd BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
 :autocmd BufNewFile *.java 0r ~/.vim/templates/skeleton.java
 :autocmd BufNewFile Makefile 0r ~/.vim/templates/skeleton_makefile
+:autocmd BufNewFile README.md 0r ~/.vim/templates/README.md
+
+"let g:python3_host_prog = '/usr/local/bin/python3.11'
