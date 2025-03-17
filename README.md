@@ -8,7 +8,8 @@ Easily set up and configure Neovim with essential dependencies and tools.
 Before starting, ensure your system has:
 - **Python 3**
 - **pip for Python 3** (`python3-pip`)
-- **sudo** privileges
+- **venv** (`python3-venv`)
+- **sudo**
 
 If these dependencies are missing, the setup script(`setup.sh`) will install them for you.
 
@@ -25,6 +26,7 @@ If these dependencies are missing, the setup script(`setup.sh`) will install the
 2. **Run the Setup Script**  
 	Once the setup is complete, configure Neovim by running:
    ```bash
+   source .venv/bin/activate
    python3 ./setup_vim.py
    ```
 
@@ -55,6 +57,7 @@ Neovim 자동 설정 스크립트.
 설치 전에 아래 도구가 시스템에 있어야 한다:
 - **Python 3**
 - **pip for Python 3** (`python3-pip`)
+- **venv** (`python3-venv`)
 - **sudo** 권한
 
 위 의존성이 없다면, `setup.sh`스크립트가 자동으로 설치를 진행한다.
@@ -72,6 +75,7 @@ Neovim 자동 설정 스크립트.
 2. **파이썬 스크립트 실행**  
    설치 완료 후, Neovim을 구성하려면 아래 명령어를 실행:
    ```bash
+   source .venv/bin/activate
    python3 ./setup_vim.py
    ```
 

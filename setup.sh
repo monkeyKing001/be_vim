@@ -17,7 +17,7 @@ if [[ "$OS" == "Darwin" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     echo "Installing necessary packages using brew..."
-    brew install python3 wget
+    brew install python3 wget python3-pip python3-venv sudo
 elif [[ "$OS" == "Linux" ]]; then
     echo "Detected Linux. Using apt-get for package installation."
     # Ensure apt-get is available
