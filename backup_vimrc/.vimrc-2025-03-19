@@ -32,13 +32,12 @@ set ai "set auto indent
 set cindent
 set showmatch
 set wmnu
-set tabstop=4
+set tabstop=2
 set expandtab
 set hlsearch
-set shiftwidth=4
+set shiftwidth=2
 set background=dark
 set mouse=a
-set colorcolumn=80
 
 "##############################################################
 "###################        terminal        ###################
@@ -74,9 +73,6 @@ tnoremap <silent><ESC> <C-\><C-n>
 "###################       clipboard        ###################
 "##############################################################
 "clipboard 
-set clipboard+=unnamedplus " use of OS clipboard
-vnoremap <C-c> "+y
-inoremap <C-c> <Esc>"+yiw
 "set clipboard=unnamed " use of OS clipboard
 "vmap <C-c> y:new ~/.vimbuffer<CR>VGp:x<CR> \| :!cat ~/.vimbuffer \| clip.exe <CR><CR>
 "map <C-v> :r ~/.vimbuffer<CR> 
@@ -129,6 +125,7 @@ if &term =~ '256color'
 	   set t_ut=
 	   endif
 "etc
+set clipboard=unnamed
 
 
 "airline
@@ -322,7 +319,5 @@ command! -range=% HardcopyPdf <line1>,<line2> hardcopy > %.ps | !ps2pdf %.ps && 
 :autocmd BufNewFile *.java 0r ~/.vim/templates/skeleton.java
 :autocmd BufNewFile Makefile 0r ~/.vim/templates/skeleton_makefile
 :autocmd BufNewFile README.md 0r ~/.vim/templates/README.md
-autocmd BufWritePre *.cpp,*.h :silent! call CocAction('format')
 
-
-let g:python3_host_prog='/root/be_vim/.venv/bin/python3'
+"let g:python3_host_prog = '/usr/local/bin/python3.11'
