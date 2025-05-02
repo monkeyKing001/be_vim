@@ -1,7 +1,22 @@
 -- Minimal placeholder config for avante.nvim
 return function()
     require("avante").setup({
-        provider = "openai",
+        provider = "gemini",
+        gemini = {
+            -- @see https://ai.google.dev/gemini-api/docs/models/gemini
+            model = "gemini-2.0-flash",
+            -- model = "gemini-1.5-flash",
+            temperature = 0,
+            max_tokens = 10000,
+            timeout = 30000,
+        },
+        behaviour = {
+            auto_suggestions = false, -- Experimental stage
+            auto_set_highlight_group = true,
+            auto_set_keymaps = true,
+            auto_apply_diff_after_generation = false,
+            support_paste_from_clipboard = false,
+        },
         openai = {
           endpoint = "https://api.openai.com/v1",
           model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
