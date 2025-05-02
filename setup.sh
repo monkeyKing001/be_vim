@@ -18,7 +18,7 @@ if [[ "$OS" == "Darwin" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     echo "Installing necessary packages using brew..."
-    brew install python3 wget python3-pip python3-venv sudo llvm
+    brew install python3 wget python3-pip python3-venv sudo clang llvm yarn
 
 # Install dependencies for Linux
 elif [[ "$OS" == "Linux" ]]; then
@@ -30,7 +30,7 @@ elif [[ "$OS" == "Linux" ]]; then
     fi
     echo "Installing necessary packages using apt-get..."
     apt-get update
-    apt-get install -y python3 python3-pip python3-venv sudo wget clangd
+    apt-get install -y python3 python3-pip python3-venv sudo wget clang clangd yarn
 else
     echo "Unsupported operating system: $OS"
     exit 1

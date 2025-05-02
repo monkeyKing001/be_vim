@@ -55,7 +55,7 @@ require("plugin_config.webdevicons")
 -- Add more plugin configs as needed
 
 -- [[ Python virtualenv path for Python 3 provider ]]
-vim.g.python3_host_prog = "/root/be_vim/.venv/bin/python3"
+vim.g.python3_host_prog = "~/be_vim/.venv/bin/python3"
 
 -- [[ Colorscheme ]]
 vim.cmd.colorscheme("koehler")
@@ -66,9 +66,9 @@ if vim.fn.has("termguicolors") == 1 then
 end
 
 -- [[ Fix 256-color tmux BCE issue ]]
-if vim.env.TERM:find("256color") then
-  vim.opt.t_ut = ""
-end
+--if vim.env.TERM:find("256color") then
+--  vim.opt.t_ut = ""
+--end
 
 -- [[ Final statusline behavior ]]
 vim.opt.laststatus = 2
