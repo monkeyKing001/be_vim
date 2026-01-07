@@ -90,6 +90,8 @@ jobs:
                - You **MUST** call `submit_pending_pull_request_review` at the end.
                - **Summary**: Summarize your findings. If no new issues were found because existing reviews covered everything, explicitly state: "Existing reviews are comprehensive; no new issues found."
 
+               
+               Command: Please Review PR #${{ inputs.pr_number }} in "${{ github.repository }}". 
             Context: ${{ inputs.additional_context }}
 
       - name: "Dump Gemini error report"
