@@ -57,6 +57,9 @@ require("plugin_config.webdevicons")
 -- [[ Python virtualenv path for Python 3 provider ]]
 vim.g.python3_host_prog = "~/be_vim/.venv/bin/python3"
 
+-- [[ Coc.nvim Node.js executable path ]]
+vim.g.coc_node_path = "/home/dongwoo-kwak/.nvm/versions/node/v24.12.0/bin/node"
+
 -- [[ Colorscheme ]]
 vim.cmd.colorscheme("koehler")
 

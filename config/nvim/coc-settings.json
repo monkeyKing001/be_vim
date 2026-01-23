@@ -8,4 +8,5 @@
   "coc.preferences.formatOnSaveFiletypes": ["cpp", "c", "objc", "objcpp"],
   "suggest.noselect": false,
   "snippets.ultisnips.pythonPrompt": false
+
 }
