@@ -93,6 +93,8 @@ autocmd("BufWritePost", {
     end, 200) -- 0.2초 딜레이
     
     -- 저장 후 Tree-sitter 하이라이팅 강제 재활성화 (색상 사라짐 방지)
-    vim.cmd("TSBufEnable highlight")
+    if vim.fn.exists(":TSBufEnable") == 2 then
+        vim.cmd("TSBufEnable highlight")
+    end
   end,
 })

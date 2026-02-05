@@ -1,24 +1,20 @@
-#!/usr/local/bin/ python3
+#!/usr/bin/env python3
 
 import os
 import shutil
 import subprocess
-import urllib.request
 import platform
 import json
 from termcolor import colored
-
-def test():
-    print("hello")
 
 def print_starting(package_name):
     print(colored(f"Starting installation of {package_name}...", "green"))
 
 def print_success(package_name):
-    print(colored(f"Successfully installed {package_name}.", "green"))
+    print(colored(f"Successfully installed/synced {package_name}.", "green"))
 
 def print_error(package_name, error_msg):
-    print(colored(f"Failed to install {package_name}: {error_msg}", "red"))
+    print(colored(f"Failed to install/synced {package_name}: {error_msg}", "red"))
 
 def is_installed(command):
     """Check if a command is available on the system."""
@@ -36,123 +32,175 @@ def install_system_lib():
     system = platform.system()
     if system == "Darwin":  # macOS
         print("Installing system libraries for macOS...")
-        dependencies = ["vim", "curl", "git", "brew"]
+        dependencies = ["nvim", "curl", "git", "brew", "node"]
         for dep in dependencies:
             if not is_installed(dep):
                 if dep == "brew":
                     install_package("Homebrew", '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
+                elif dep == "nvim":
+                    # Install stable version of Neovim
+                    install_package("Neovim", "brew install neovim")
+                elif dep == "node":
+                    install_package("Node.js", "brew install node")
                 else:
                     install_package(dep, f"brew install {dep}")
     elif system == "Linux":
         print("Installing system libraries for Linux...")
-        dependencies = ["sudo", "vim", "curl", "git", "software-properties-common"]
+        dependencies = ["sudo", "nvim", "curl", "git", "software-properties-common", "nodejs"]
         for dep in dependencies:
             if not is_installed(dep):
-                install_package(dep, f"sudo apt-get install -y {dep}")
+                if dep == "nvim":
+                    install_package("Neovim PPA", "sudo add-apt-repository ppa:neovim-ppa/unstable -y")
+                    install_package("Update APT", "sudo apt-get update -y")
+                    install_package("Neovim", "sudo apt-get install -y neovim")
+                elif dep == "nodejs":
+                    install_package("Node.js Setup", "curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -")
+                    install_package("Node.js", "sudo apt-get install -y nodejs")
+                else:
+                    install_package(dep, f"sudo apt-get install -y {dep}")
     else:
         print_error("System Libraries", f"Unsupported OS: {system}. Exiting.")
         exit(1)
 
-def install_nodejs_LTS():
-    if not is_installed("node"):
-        system = platform.system()
-        if system == "Darwin":  # macOS
-            install_package("Node.js LTS", "brew install node@lts")
-        elif system == "Linux":  # Linux
-            install_package(
-                "Node.js Setup Script",
-                "curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -"
-            )
-            install_package("Node.js LTS", "sudo apt-get install -y nodejs")
-        else:
-            print_error("Node.js LTS", f"Unsupported OS: {system}. Exiting.")
-            exit(1)
-    else:
-        print_success("Node.js (already installed)")
-
-def install_neovim_latest():
-    if not is_installed("nvim"):
-        system = platform.system()
-        if system == "Darwin":  # macOS
-            install_package("Neovim", "brew install --HEAD neovim")
-        elif system == "Linux":  # Linux
-            install_package("Neovim PPA", "sudo add-apt-repository ppa:neovim-ppa/unstable -y")
-            install_package("Update APT", "sudo apt-get update -y")
-            install_package("Neovim", "sudo apt-get install -y neovim")
-        else:
-            print_error("Neovim", f"Unsupported OS: {system}. Exiting.")
-            exit(1)
-    else:
-        print_success("Neovim (already installed)")
-
 def install_dependencies():
     install_system_lib()
-    install_nodejs_LTS()
-    install_neovim_latest()
 
 #########################
-#      Get Vim Plug     #
+#      Sync Config      #
 #########################
 
-def download_files():
-    plug_vim_url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    nvim_init_url = "https://raw.githubusercontent.com/monkeyKing001/be_vim/main/init.vim"
-    vimrc_url = "https://raw.githubusercontent.com/monkeyKing001/be_vim/main/.vimrc"
-
+def sync_config():
+    """
+    Sync local configuration files to the Neovim config directory.
+    """
     home_dir = os.path.expanduser("~")
-    nvim_config_dir = os.path.join(home_dir, ".config", "nvim")
-    nvim_autoload_dir = os.path.join(home_dir, ".local", "share", "nvim", "site", "autoload")
-    plug_vim_path = os.path.join(nvim_autoload_dir, "plug.vim")
-    init_vim_path = os.path.join(nvim_config_dir, "init.vim")
-    vimrc_path = os.path.join(home_dir, ".vimrc")
+    nvim_config_dest = os.path.join(home_dir, ".config", "nvim")
+    vimrc_dest = os.path.join(home_dir, ".vimrc")
+    
+    # Local source paths
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    nvim_config_src = os.path.join(current_dir, "config", "nvim")
+    vimrc_src = os.path.join(current_dir, ".vimrc")
 
-    os.makedirs(nvim_config_dir, exist_ok=True)
-    os.makedirs(nvim_autoload_dir, exist_ok=True)
-
-    def download_file(url, path):
+    # 1. Sync nvim config directory
+    if os.path.exists(nvim_config_src):
+        print_starting("Syncing Neovim configuration files")
+        os.makedirs(os.path.dirname(nvim_config_dest), exist_ok=True)
+        
         try:
-            print_starting(f"Downloading {url}")
-            urllib.request.urlretrieve(url, path)
-            print_success(f"Downloaded {url}")
+            # For Python 3.8+, we can use dirs_exist_ok=True
+            if os.path.exists(nvim_config_dest):
+                shutil.copytree(nvim_config_src, nvim_config_dest, dirs_exist_ok=True)
+            else:
+                shutil.copytree(nvim_config_src, nvim_config_dest)
+            print_success("Neovim configuration synced from local config/nvim")
         except Exception as e:
-            print_error(f"Downloading {url}", str(e))
-            exit(1)
+            print_error("Neovim configuration sync", str(e))
 
-    download_file(plug_vim_url, plug_vim_path)
-    download_file(nvim_init_url, init_vim_path)
-    download_file(vimrc_url, vimrc_path)
+    # 2. Sync .vimrc file
+    if os.path.exists(vimrc_src):
+        print_starting("Syncing .vimrc")
+        try:
+            shutil.copy2(vimrc_src, vimrc_dest)
+            print_success(".vimrc synced from local .vimrc")
+        except Exception as e:
+            print_error(".vimrc sync", str(e))
 
 #########################
-#      Install plgin    #
+#      Install Plugins   #
 #########################
+
 def install_nvim_plugins():
-    """Install Neovim plugins using :PlugInstall."""
+    """Install Neovim plugins using lazy.nvim's headless sync."""
     try:
-        print_starting("Neovim Plugins")
+        print_starting("Neovim Plugins (lazy.nvim sync)")
+        # Lazy! sync installs plugins. We add a small delay/wait if needed.
         subprocess.run(
-            ["nvim", "+PlugInstall", "+qall"],
+            ["nvim", "--headless", "+Lazy! sync", "+qa"],
             check=True
         )
-        print_success("Neovim Plugins installed successfully")
+        print_success("Neovim Plugins synced")
     except subprocess.CalledProcessError as e:
-        print_error("Neovim Plugins", str(e))
+        # Sometimes lazy sync returns non-zero even if mostly successful
+        print(colored(f"  Note: Lazy sync finished with some notices (this is often okay).", "yellow"))
 
-#########################
-#      Source sh        #
-#########################
-
-def source_shell_rc(shell_rc_path):
-    """Source the shell configuration file."""
+def install_coc_languages():
+    """
+    Reads the ./coc/extensions/package.json file and installs all listed coc.nvim extensions.
+    """
     try:
-        if os.path.exists(shell_rc_path):
-            print(f"Sourcing {shell_rc_path} to apply changes...")
-            subprocess.run(f'source {shell_rc_path}', shell=True, executable='/bin/bash', check=True)
-            print(f"Successfully sourced {shell_rc_path}")
-        else:
-            print(f"{shell_rc_path} does not exist. Skipping sourcing.")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to source {shell_rc_path}: {str(e)}")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        package_json_path = os.path.join(current_dir, 'coc', 'extensions', 'package.json')
 
+        if not os.path.exists(package_json_path):
+            return
+
+        with open(package_json_path, 'r') as file:
+            data = json.load(file)
+
+        extensions = data.get('dependencies', {})
+        for extension in extensions.keys():
+            print(f"Installing coc extension: {extension}...")
+            # Use --headless and -c for each extension installation
+            subprocess.run(
+                ['nvim', '--headless', '-c', f'CocInstall -sync {extension}', '-c', 'q'],
+                capture_output=True # Capture output to avoid messy logs
+            )
+        print_success("coc.nvim extensions synced")
+    except Exception as e:
+        print_error("coc.nvim extensions", str(e))
+
+#########################
+#   Generate Env Config #
+#########################
+
+def generate_env_config():
+    """
+    Generates ~/.config/nvim/lua/env_paths.lua with absolute paths
+    to the project's Python virtual environment and the system's Node.js.
+    """
+    try:
+        print_starting("Environment configuration (env_paths.lua)")
+        
+        home_dir = os.path.expanduser("~")
+        lua_config_dir = os.path.join(home_dir, ".config", "nvim", "lua")
+        env_paths_file = os.path.join(lua_config_dir, "env_paths.lua")
+        
+        # 1. Determine Python Path (Project .venv or System)
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        venv_python = os.path.join(current_dir, ".venv", "bin", "python3")
+        
+        if os.path.exists(venv_python):
+            final_python = venv_python
+            print(f"  Found project venv: {final_python}")
+        else:
+            final_python = shutil.which("python3")
+            print(f"  Project venv not found. Using system python: {final_python}")
+
+        # 2. Determine Node Path (System)
+        final_node = shutil.which("node")
+        if final_node:
+             print(f"  Found node executable: {final_node}")
+        else:
+             final_node = ""
+             print(colored("  Warning: Node.js executable not found in PATH.", "yellow"))
+
+        # 3. Write Lua file
+        os.makedirs(lua_config_dir, exist_ok=True)
+        
+        lua_content = f"""-- Auto-generated by setup_vim.py
+return {{
+    python_path = "{final_python}",
+    node_path = "{final_node}"
+}}
+"""
+        with open(env_paths_file, "w") as f:
+            f.write(lua_content)
+            
+        print_success(f"Generated {env_paths_file}")
+
+    except Exception as e:
+        print_error("Environment configuration", str(e))
 
 #########################
 #      Add Alias        #
@@ -169,85 +217,20 @@ def add_alias():
             if alias_command in file.read():
                 print(f"Alias already exists in {shell_rc}.")
                 return
-    with open(shell_rc, "a") as file:
-        file.write(f"\n# Alias for Neovim\n{alias_command}\n")
-    print(f"Added alias to {shell_rc}.")
-    source_shell_rc(shell_rc)
-
-def install_coc_languages():
-    """
-    Reads the ./coc/extensions/package.json file and installs all listed coc.nvim extensions.
-    """
+    
     try:
-        # Path to the package.json file
-        package_json_path = os.path.expanduser('./coc/extensions/package.json')
-
-        # Check if the file exists
-        if not os.path.exists(package_json_path):
-            print(f"Error: {package_json_path} does not exist.")
-            return
-
-        # Read the package.json file
-        with open(package_json_path, 'r') as file:
-            data = json.load(file)
-
-        # Extract dependencies
-        extensions = data.get('dependencies', {})
-        if not extensions:
-            print("No extensions found in package.json.")
-            return
-
-        # Install each extension
-        for extension in extensions.keys():
-            print(f"Installing {extension}...")
-            try:
-                # Use the CocInstall command to install the extension
-                subprocess.run(
-                    ['nvim', '--headless', '-c', f'CocInstall {extension}', '-c', 'q'],
-                    check=True
-                )
-                print(f"Successfully installed {extension}")
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to install {extension}: {e}")
+        with open(shell_rc, "a") as file:
+            file.write(f"\n# Alias for Neovim\n{alias_command}\n")
+        print(f"Added alias to {shell_rc}.")
     except Exception as e:
-        print(f"Error: {e}")
-
-def install_treesitter_language():
-    """
-    Install Tree-sitter languages, skipping already installed ones.
-    """
-    try:
-        languages = ["cpp", "python", "java", "javascript", "typescript", "cmake", "bash", "dockerfile"]
-
-        # Install each extension
-        for language in languages:
-            print(f"Checking installation for {language}...")
-            try:
-                # Check if the language is already installed
-                result = subprocess.run(
-                    ['nvim', '--headless', '-c', f'TSInstallInfo {language}', '-c', 'q'],
-                    check=True, capture_output=True, text=True
-                )
-                if "not installed" in result.stdout:
-                    print(f"{language} is not installed. Installing...")
-                    subprocess.run(
-                        ['nvim', '--headless', '-c', f'TSInstallSync {language}', '-c', 'q'],
-                        check=True
-                    )
-                    print(f"Successfully installed {language}")
-                else:
-                    print(f"{language} is already installed. Skipping...")
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to check or install {language}: {e}")
-    except Exception as e:
-        print(f"Error: {e}")
+        print(f"Failed to add alias: {e}")
 
 def main():
     install_dependencies()
-    download_files()
+    sync_config()
+    generate_env_config()
     install_nvim_plugins()
     install_coc_languages()
-    install_treesitter_language()
     add_alias()
 
 if __name__ == "__main__":

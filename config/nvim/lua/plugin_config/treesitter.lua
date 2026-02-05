@@ -2,11 +2,15 @@
 --               Treesitter Configuration (Lua)               --
 --============================================================--
 
--- plugin_config/treesitter.lua
+local status, configs = pcall(require, "nvim-treesitter.configs")
+if not status then
+    return
+end
 
-require("nvim-treesitter.configs").setup({
+configs.setup({
   ensure_installed = {
     "c", "cpp", "python", "lua", "json", "bash", "vim", "markdown",
+    "java", "javascript", "typescript", "cmake", "dockerfile"
   },
   highlight = {
     enable = true,
