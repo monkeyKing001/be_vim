@@ -9,9 +9,6 @@
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
---[[ Load Legacy vimrc config ]]
--- vim.cmd("source ~/.config/nvim/lua/legacy_config.vim") --
-
 -- [[ Plugin manager bootstrap (lazy.nvim) ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -37,25 +34,31 @@ require("mappings")        -- Key mappings (normal, insert, visual...)
 require("autocmds")        -- Autocommands (e.g., templates, format on save)
 
 
--- [[ Load plugin configurations ]]
-require("plugin_config.treesitter")
-require("plugin_config.coc")
-require("plugin_config.airline")
-require("plugin_config.ultisnips")
-require("plugin_config.nerdtree")
---require("plugin_config.dadbod")
---require("plugin_config.restconsole")
---require("plugin_config.go")
-require("plugin_config.cmp")
---require("plugin_config.avante")
-require("plugin_config.copilot")
-require("plugin_config.imgclip")
-require("plugin_config.telescope")
-require("plugin_config.webdevicons")
+-- [[ Load plugin configurations (Moved to lua/plugins.lua config blocks) ]]
+-- require("plugin_config.treesitter")
+-- require("plugin_config.coc")
+-- require("plugin_config.airline")
+-- require("plugin_config.ultisnips")
+-- require("plugin_config.nerdtree")
+-- require("plugin_config.cmp")
+-- require("plugin_config.copilot")
+-- require("plugin_config.imgclip")
+-- require("plugin_config.telescope")
+-- require("plugin_config.webdevicons")
 -- Add more plugin configs as needed
 
--- [[ Python virtualenv path for Python 3 provider ]]
-vim.g.python3_host_prog = "~/be_vim/.venv/bin/python3"
+-- [[ Dynamic Environment Paths ]]
+-- setup_vim.py가 생성하는 env_paths.lua 파일을 로드 시도
+local has_env, env_paths = pcall(require, "env_paths")
+
+if has_env then
+    vim.g.python3_host_prog = env_paths.python_path
+    vim.g.coc_node_path = env_paths.node_path
+else
+    -- Fallback: env_paths.lua가 없을 경우 시스템 경로 사용
+    vim.g.python3_host_prog = vim.fn.exepath("python3")
+    vim.g.coc_node_path = vim.fn.exepath("node")
+end
 
 -- [[ Colorscheme ]]
 vim.cmd.colorscheme("koehler")
