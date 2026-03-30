@@ -1,0 +1,3 @@
+-- vim.cmd([[TSDisable highlight]])
+--if vim.fn.exists(':TSDisable') == 2 then        vim.cmd([[TSDisable highlight]]) 
+--end

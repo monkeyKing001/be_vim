@@ -10,6 +10,9 @@ require("lazy").setup({
   branch = "release",
   build = "npm install",
   lazy = false, -- 바로 로딩
+  config = function()
+    require("plugin_config.coc")
+  end,
 },
 -- treesitter
 {
@@ -23,13 +26,22 @@ require("lazy").setup({
     {
   "vim-airline/vim-airline",
   lazy = false,
+  config = function()
+    require("plugin_config.airline")
+  end,
 },
 {
   "vim-airline/vim-airline-themes",
   lazy = false,
 },
     -- snippets
-    { "SirVer/ultisnips", lazy = false },
+    { 
+      "SirVer/ultisnips", 
+      lazy = false,
+      config = function()
+        require("plugin_config.ultisnips")
+      end,
+    },
 { "honza/vim-snippets", lazy = false },
 
 
