@@ -84,13 +84,22 @@ def generate_env_config(base_dir: Path, home_dir: Path):
 # --- Plugin Management ---
 
 def install_nvim_plugins():
-    """Install plugins using Lazy.nvim."""
+    """Install plugins, Treesitter parsers, and CoC extensions."""
     print_step("Installing Neovim Plugins (Lazy.nvim)")
     success, _ = run_cmd(["nvim", "--headless", "+Lazy! sync", "+qa"])
     if success:
         print_success("Plugins synced successfully via Lazy.")
     else:
-        print_error("Lazy sync had issues. Check Neovim manually.")
+        print_error("Failed to sync plugins via Lazy.")
+
+    print_step("Installing Treesitter Parsers")
+    # TSUpdateSync ensures parsers are installed/updated during the setup process
+    success, _ = run_cmd(["nvim", "--headless", "+TSUpdateSync", "+qa"])
+    if success:
+        print_success("Treesitter parsers installed successfully.")
+    else:
+        print_error("Failed to install Treesitter parsers.")
+
 
 def install_coc_extensions(base_dir: Path):
     """Install COC extensions from package.json."""

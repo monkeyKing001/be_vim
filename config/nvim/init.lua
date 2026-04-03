@@ -5,8 +5,12 @@
 --                (for Lua-based full configuration)           --
 --============================================================--
 
--- [[ Fix Treesitter Runtimepath ]]
-vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/site")
+-- [[ Fix Treesitter Runtimepath & Parser Dir ]]
+-- Define the exact, absolute path once. No trailing slashes.
+vim.g.treesitter_parser_dir = vim.fn.stdpath("data") .. "/site"
+
+-- Force Neovim to look here FIRST for anything (including parsers)
+vim.opt.runtimepath:prepend(vim.g.treesitter_parser_dir)
 
 -- [[ Set leader key early ]]
 vim.g.mapleader = ","

@@ -8,7 +8,7 @@ if not status then
 end
 
 configs.setup({
-  parser_install_dir = vim.fn.stdpath("data") .. "/site",
+  parser_install_dir = vim.g.treesitter_parser_dir,
   ensure_installed = {
     "c", "cpp", "python", "lua", "json", "bash", "vim", "markdown",
     "java", "javascript", "typescript", "cmake", "dockerfile",
