@@ -49,7 +49,7 @@ require("lazy").setup({
 { "MunifTanjim/nui.nvim", lazy = true },
 
 -- dressing (기본 UI 개선)
-{ "stevearc/dressing.nvim", event = "VeryLazy" },
+{ "stevearc/dressing.nvim", lazy = false },
 
   -- NERDTree
   {

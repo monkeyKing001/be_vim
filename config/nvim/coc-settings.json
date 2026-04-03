@@ -7,6 +7,10 @@
   ],
   "coc.preferences.formatOnSaveFiletypes": ["cpp", "c", "objc", "objcpp"],
   "suggest.noselect": false,
-  "snippets.ultisnips.pythonPrompt": false
-
+  "snippets.ultisnips.pythonPrompt": false,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.venvPath": ".",
+  "python.venvFolders": [".venv", "venv", "env", ".env"],
+  "pyright.disableDiagnostics": false
 }

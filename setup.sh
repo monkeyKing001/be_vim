@@ -16,7 +16,7 @@ install_mac_deps() {
     fi
     echo "Updating Homebrew and installing dependencies..."
     brew update
-    brew install neovim curl git python3 wget node yarn
+    brew install neovim curl git python3 wget node yarn tree-sitter-cli
 }
 
 install_linux_deps() {
@@ -50,7 +50,7 @@ fi
 # 2. Node.js setup (using 'n')
 if [[ "$OS" == "Linux" ]]; then
     echo "Setting up Node.js LTS globally..."
-    sudo npm install -g n || true
+    sudo npm install -g n tree-sitter-cli || true
     sudo n lts || true
 fi
 

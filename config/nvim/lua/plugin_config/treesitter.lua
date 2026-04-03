@@ -8,9 +8,11 @@ if not status then
 end
 
 configs.setup({
+  parser_install_dir = vim.fn.stdpath("data") .. "/site",
   ensure_installed = {
     "c", "cpp", "python", "lua", "json", "bash", "vim", "markdown",
-    "java", "javascript", "typescript", "cmake", "dockerfile"
+    "java", "javascript", "typescript", "cmake", "dockerfile",
+    "query", "vimdoc"
   },
   highlight = {
     enable = true,
@@ -23,4 +25,3 @@ configs.setup({
     enable = true,
   },
 })
-

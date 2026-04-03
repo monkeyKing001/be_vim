@@ -26,17 +26,20 @@ return function()
               editing    = { "⡀","⠄","⠂","⠁","⠈","⠐","⠠","⢀" },
               generating = { "·","✢","✳","∗","✻","✽" },
               thinking   = { "·",".." },
+            },
+            input = {
+              prefix = "> ",
+              height = 10,
+            },
+            ask = {
+              floating    = true,
+              start_insert = true,
+              border       = "rounded",
+            },
         },
         input = {
-          prefix = "> ",
-          height = 10,
+            provider = "dressing",
         },
-        ask = {
-          floating    = true,
-          start_insert = true,
-          border       = "rounded",
-        },
-       },
         providers = {
             gemini = {
                 -- @see https://ai.google.dev/gemini-api/docs/models/gemini

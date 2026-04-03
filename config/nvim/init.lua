@@ -5,9 +5,15 @@
 --                (for Lua-based full configuration)           --
 --============================================================--
 
+-- [[ Fix Treesitter Runtimepath ]]
+vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/site")
+
 -- [[ Set leader key early ]]
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
+
+--[[ Load Legacy vimrc config ]]
+-- vim.cmd("source ~/.config/nvim/lua/legacy_config.vim") --
 
 -- [[ Plugin manager bootstrap (lazy.nvim) ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
