@@ -4,6 +4,7 @@ vim.g.coc_global_extensions = {
   "coc-json",
   "coc-tsserver",
   "coc-pyright",
+  "coc-ruff",
   "coc-snippets",
   "coc-clangd",
 }

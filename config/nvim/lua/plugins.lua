@@ -121,6 +121,40 @@ require("lazy").setup({
 },
  { "tpope/vim-fugitive", lazy = false },
 
+  -- Git signs
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end
+  },
+
+  -- Aerial for code outline
+  {
+    "stevearc/aerial.nvim",
+    dependencies = {
+       "nvim-treesitter/nvim-treesitter",
+       "nvim-tree/nvim-web-devicons"
+    },
+    config = function()
+      require("plugin_config.aerial")
+    end
+  },
+
+  -- DAP for debugging
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "mfussenegger/nvim-dap-python",
+    },
+    config = function()
+      require("plugin_config.dap")
+    end
+  },
+
+
 
 })
 
