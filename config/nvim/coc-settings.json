@@ -5,8 +5,14 @@
     "--completion-style=detailed",
     "--header-insertion=iwyu"
   ],
-  "coc.preferences.formatOnSaveFiletypes": ["cpp", "c", "objc", "objcpp"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "cpp",
+    "c",
+    "objc",
+    "objcpp"
+  ],
   "suggest.noselect": false,
-  "snippets.ultisnips.pythonPrompt": false
-
+  "snippets.ultisnips.pythonPrompt": false,
+  "semanticTokens.enable": true,
+  "python.analysis.semanticHighlighting": true
 }
