@@ -14,5 +14,7 @@
   "suggest.noselect": false,
   "snippets.ultisnips.pythonPrompt": false,
   "semanticTokens.enable": true,
-  "python.analysis.semanticHighlighting": true
+  "python.analysis.semanticHighlighting": true,
+  "python.formatting.provider": "ruff",
+  "python.linting.ruffEnabled": true
 }
